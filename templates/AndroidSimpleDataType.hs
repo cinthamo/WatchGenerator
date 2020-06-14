@@ -17,6 +17,7 @@ data LayoutSimpleOrientation = Vertical | Horizontal
               deriving (Show, Eq)
 
 data LayoutSimple = LayoutSimple {
+                layoutName :: String,
                 layoutType :: LayoutSimpleType,
                 orientation :: LayoutSimpleOrientation,
                 layoutHeight :: Maybe Double,

@@ -7,7 +7,7 @@ generateLayoutSimple :: DataSimple -> LayoutList
 generateLayoutSimple (DataSimple aPackage _ _ aLayouts) = map (getLayout aPackage) aLayouts
 
 getLayout :: String -> LayoutSimple -> Layout
-getLayout aPackage (LayoutSimple aLayoutType aOrientation aLayoutHeight aItems) =
+getLayout aPackage (LayoutSimple _ aLayoutType aOrientation aLayoutHeight aItems) =
   let aUseScroll = itHasGrid aItems
       aIsVertical = itIsVertical aOrientation
       aLayoutItems = map (layoutItem aPackage) aItems in
