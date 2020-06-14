@@ -25,7 +25,7 @@ newtype ItemBase = ItemBase { id :: String }
 
 data ItemSpecific =
             Text { text :: String, gravity :: Maybe String }
-          | Edit { label :: String, inputType :: String }
+          | Edit { inputType :: String, label :: String, labelOrientation :: String, labelBefore :: Bool, labelAfter :: Bool }
           | Button { text :: String, onClick :: String }
           | Image { width :: Double, height :: Double }
           | Grid { package :: String }

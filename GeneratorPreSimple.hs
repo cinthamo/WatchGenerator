@@ -34,7 +34,13 @@ layoutItem d (GXLayoutElement base specific) =
 layoutItemSpec :: GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSimpleSpecific
 layoutItemSpec (GXLayoutElementData _ _ _ "Image") _ _ = ImageSimple 100.0 60.0
 layoutItemSpec (GXLayoutElementData aCaption GXLayoutLabelPositionTypeNone True _) _ _ = TextSimple aCaption Nothing
-layoutItemSpec (GXLayoutElementData aCaption _ _ _) name d = EditSimple aCaption (getInputType name d)
+layoutItemSpec (GXLayoutElementData aCaption aLabelPosition _ _) name d = EditSimple aCaption (convertLabelPosition aLabelPosition) (getInputType name d)
+  where
+    convertLabelPosition GXLayoutLabelPositionTypeLeft = LabelPositionLeft
+    convertLabelPosition GXLayoutLabelPositionTypeRight = LabelPositionRight
+    convertLabelPosition GXLayoutLabelPositionTypeTop = LabelPositionTop
+    convertLabelPosition GXLayoutLabelPositionTypeBottom = LabelPositionBottom
+    convertLabelPosition GXLayoutLabelPositionTypeNone = LabelPositionNone
 layoutItemSpec (GXLayoutElementAction aActionName aCaption) _ _ = ButtonSimple aCaption aActionName
 layoutItemSpec (GXLayoutElementTextBlock aCaption) _ _ = TextSimple aCaption Nothing
 layoutItemSpec GXLayoutElementImage{} _ _ = ImageSimple 0 0

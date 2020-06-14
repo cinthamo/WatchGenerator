@@ -40,7 +40,17 @@ layoutItems aPackage d = map f where
 layoutItem :: String -> GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSpecific
 layoutItem _ (GXLayoutElementData _ _ _ _ "Image") _ _ = Image 100.0 60.0
 layoutItem _ (GXLayoutElementData _ aCaption GXLayoutLabelPositionTypeNone True _) _ _ = Text aCaption Nothing
-layoutItem _ (GXLayoutElementData _ aCaption _ _ _) name d = Edit aCaption (getInputType name d)
+layoutItem _ (GXLayoutElementData _ aCaption aLabelPosition _ _) name d = Edit (getInputType name d) aCaption (getLabelOrientation aLabelPosition) (getLabelBefore aLabelPosition) (getLabelAfter aLabelPosition)
+  where
+    getLabelOrientation GXLayoutLabelPositionTypeLeft = "horizontal"
+    getLabelOrientation GXLayoutLabelPositionTypeRight = "horizontal"
+    getLabelOrientation _ = "vertical"
+    getLabelBefore GXLayoutLabelPositionTypeLeft = True
+    getLabelBefore GXLayoutLabelPositionTypeTop = True
+    getLabelBefore _ = False
+    getLabelAfter GXLayoutLabelPositionTypeRight = True
+    getLabelAfter GXLayoutLabelPositionTypeBottom = True
+    getLabelAfter _ = False
 layoutItem _ (GXLayoutElementAction aActionName _ aCaption _) _ _ = Button aCaption ("onButton" ++ aActionName)
 layoutItem _ (GXLayoutElementTextBlock aCaption) _ _ = Text aCaption Nothing
 layoutItem _ GXLayoutElementImage{} _ _ = Image 0 0

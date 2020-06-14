@@ -3,13 +3,15 @@ $!--- Edit ---!$
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="$item.s.labelOrientation$">
 
+$if(item.s.labelBefore)$
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="$item.s.label$" />
+$endif$
 
         <EditText
             android:id="@+id/$item.b.id$"
@@ -17,6 +19,14 @@ $!--- Edit ---!$
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:inputType="$item.s.inputType$" />
+
+$if(item.s.labelAfter)$
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="$item.s.label$" />
+$endif$
 
     </LinearLayout>
 $elseif(item.s.onClick)$

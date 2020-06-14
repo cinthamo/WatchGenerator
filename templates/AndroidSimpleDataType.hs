@@ -35,8 +35,15 @@ data ItemSimpleBase = ItemSimpleBase {
 
 data ItemSimpleSpecific =
             TextSimple { text :: String, gravity :: Maybe String }
-          | EditSimple { label :: String, inputType :: String }
+          | EditSimple { label :: String, labelPosition :: LabelPosition, inputType :: String }
           | ButtonSimple { text :: String, actionName :: String  }
           | ImageSimple { width :: Double, height :: Double }
           | GridSimple
+          deriving (Show, Eq)
+
+data LabelPosition = LabelPositionLeft
+                   | LabelPositionRight
+                   | LabelPositionTop
+                   | LabelPositionBottom
+                   | LabelPositionNone
           deriving (Show, Eq)

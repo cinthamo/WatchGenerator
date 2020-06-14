@@ -28,7 +28,16 @@ layoutItem :: String -> ItemSimple -> Item
 layoutItem aPackage (ItemSimple (ItemSimpleBase aId _) specific) = Item (ItemBase aId) (f specific)
   where
     f (TextSimple aText aGravity) = Text aText aGravity
-    f (EditSimple aLabel aInputType) = Edit aLabel aInputType
+    f (EditSimple aLabel aLabelPosition aInputType) = Edit aInputType aLabel (getLabelOrientation aLabelPosition) (getLabelBefore aLabelPosition) (getLabelAfter aLabelPosition)
     f (ButtonSimple aText aActionName) = Button aText ("onButton" ++ aActionName)
     f (ImageSimple aWidth aHeight) = Image aWidth aHeight
     f GridSimple = Grid aPackage
+    getLabelOrientation LabelPositionLeft = "horizontal"
+    getLabelOrientation LabelPositionRight = "horizontal"
+    getLabelOrientation _ = "vertical"
+    getLabelBefore LabelPositionLeft = True
+    getLabelBefore LabelPositionTop = True
+    getLabelBefore _ = False
+    getLabelAfter LabelPositionRight = True
+    getLabelAfter LabelPositionBottom = True
+    getLabelAfter _ = False
