@@ -1,0 +1,28 @@
+build.gradle
+- Agregar bajo dependencies
+	implementation 'com.google.android.gms:play-services-wearable:10.2.4'
+	compileOnly 'com.google.android.wearable:wearable:2.0.3'
+//	implementation 'com.google.android.support:wearable:2.0.3'
+	implementation "com.android.support:support-v13:${ANDROID_SUPPORT_LIBRARY_VERSION}"
+	implementation "com.android.support:recyclerview-v7:${ANDROID_SUPPORT_LIBRARY_VERSION}"
+
+src/main/AndroidManifest.xml
+- Agragar bajo <manifest>
+    <uses-feature android:name="android.hardware.type.watch" />
+
+- Cambiar
+    <activity android:name=".Main" ...>
+  por
+    <activity android:name=".MainNew" ...>
+
+src/main/res/layout
+- Agregar fuentes *generados* main.xml y line.xml
+
+src/main/java/com/artech/masterwatch
+- Agregar fuente MainBase.java y MyImageView.java
+
+src/main/java/com/artech/masterwatch/%examplename%
+- Agregar fuentes *generados* MainNew.java y MyRecyclerAdapter.java
+
+src/main/java/com/artech/masterwatch/%examplename%/controls
+- Agregar fuentes *generados* MyRecylerView.java y MyRecyclerAdapter.java
