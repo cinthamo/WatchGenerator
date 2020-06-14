@@ -2,7 +2,7 @@ module GeneratorMainSimple (generateMainSimple) where
 
 import Templates.AndroidSimpleDataType
 import Templates.AndroidMainDataType
-import GeneratorUtilsAndroid
+import GeneratorUtils
 import Data.Maybe
 
 generateMainSimple :: DataSimple -> AndroidMain

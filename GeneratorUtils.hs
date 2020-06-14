@@ -1,6 +1,6 @@
-module GeneratorUtilsBase where
+module GeneratorUtils where
 
-import Model.GXModelBase
+import Model.GXModel
 import Data.Char
 import Data.List
 
@@ -59,3 +59,26 @@ getInputType name d _ = case findDataTypeProperty name d of
 emptyToNothing :: [a] -> Maybe [a]
 emptyToNothing [] = Nothing
 emptyToNothing xl = Just xl
+
+{-- Apple --}
+
+gxControlIBOutletPropertyName :: String -> String
+gxControlIBOutletPropertyName controlName1 = "gxControl_" ++ normalizedLowercaseControlName controlName1
+
+gxControlIBOutletLabelPropertyName :: String -> String
+gxControlIBOutletLabelPropertyName controlName1 = "gxControlLabel_" ++ normalizedLowercaseControlName controlName1
+
+gxControlIBOutletEditorPropertyName :: String -> String
+gxControlIBOutletEditorPropertyName controlName1 = "gxControlEditor_" ++ normalizedLowercaseControlName controlName1
+
+gxControlIBActionSelectorName :: String -> String
+gxControlIBActionSelectorName controlName1 = "gxControlActionSelector_" ++ normalizedControlName controlName1
+
+normalizedControlName :: String -> String
+normalizedControlName controlName1
+  | null controlName1 = controlName1
+  | head controlName1 == '&' = tail controlName1
+  | otherwise = controlName1
+
+normalizedLowercaseControlName :: String -> String
+normalizedLowercaseControlName controlName1 = map toLower (normalizedControlName controlName1)

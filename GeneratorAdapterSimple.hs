@@ -2,7 +2,7 @@ module GeneratorAdapterSimple (generateAdapterSimple) where
 
 import Templates.AndroidSimpleDataType
 import Templates.AndroidMainDataType
-import GeneratorUtilsAndroid
+import GeneratorUtils
 import Data.Maybe
 
 generateAdapterSimple :: DataSimple -> Maybe AndroidAdapter

@@ -1,4 +1,4 @@
-module Model.GXModelBase where
+module Model.GXModel where
 
 data GXLayoutElementType = GXLayoutElementTypeTable
                          | GXLayoutElementTypeRow

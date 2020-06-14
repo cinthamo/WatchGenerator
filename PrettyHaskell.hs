@@ -1,6 +1,6 @@
 module PrettyHaskell (ppMetadata, ppExample) where
 
-import Model.GXModelBase
+import Model.GXModel
 import Templates.AndroidLayoutDataType
 import Templates.AndroidMainDataType
 import Text.Show.Pretty (ppShow)

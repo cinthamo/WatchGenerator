@@ -1,11 +1,12 @@
 module Generator (generate) where
 
-import Model.GXModelBase
+import Model.GXModel
 import Templates.AndroidLayoutDataType
 import Templates.AndroidMainDataType
-import GeneratorUtilsBase
+import GeneratorUtils
 import Data.Maybe
 
+-- Pasa de estrutra de json a estucturas finales
 generate :: GXAppModel -> (LayoutList, AndroidMain, Maybe AndroidAdapter)
 generate model = let panel = head $ panelObjects model
                      aPanelDataProvider = panelDataProvider panel

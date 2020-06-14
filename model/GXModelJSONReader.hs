@@ -3,7 +3,7 @@
 
 module Model.GXModelJSONReader (parseApplicationModel) where
 
-import Model.GXModelBase
+import Model.GXModel
 import Data.Aeson ((.:), (.:?), (.!=), decode, FromJSON(..), Value(..), Object)
 import Data.Aeson.Types (typeMismatch, fromJSON, Result(..), Parser, parseMaybe)
 import Data.Scientific (toRealFloat)

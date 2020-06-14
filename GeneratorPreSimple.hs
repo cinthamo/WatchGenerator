@@ -1,8 +1,8 @@
 module GeneratorPreSimple (generatePreSimple) where
 
-import Model.GXModelAndroid
+import Model.GXModel
 import Templates.AndroidSimpleDataType
-import GeneratorUtilsAndroid
+import GeneratorUtils
 
 -- Pasa de estructura de json a estructura intermedia
 generatePreSimple :: GXAppModel -> DataSimple
