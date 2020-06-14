@@ -16,12 +16,17 @@ convertData (Model.GXModelBase.GXDataElement aDataProvider aVariables aAttribute
   Model.GXModelAndroid.GXDataElement aDataProvider (map convertVariable aVariables) (map convertAttribute aAttributes)
 
 convertVariable :: Model.GXModelBase.GXDataVariableElement -> Model.GXModelAndroid.GXDataVariableElement
-convertVariable (Model.GXModelBase.GXDataVariableElement aVariableName _) =
-  Model.GXModelAndroid.GXDataVariableElement aVariableName
+convertVariable (Model.GXModelBase.GXDataVariableElement aVariableName aVariableType) =
+  Model.GXModelAndroid.GXDataVariableElement aVariableName (convertType aVariableType)
 
 convertAttribute :: Model.GXModelBase.GXDataAttributeElement -> Model.GXModelAndroid.GXDataAttributeElement
-convertAttribute (Model.GXModelBase.GXDataAttributeElement aAttributeName _) =
-  Model.GXModelAndroid.GXDataAttributeElement aAttributeName
+convertAttribute (Model.GXModelBase.GXDataAttributeElement aAttributeName aAttributeType) =
+  Model.GXModelAndroid.GXDataAttributeElement aAttributeName (convertType aAttributeType)
+
+convertType :: Model.GXModelBase.GXDataType -> Model.GXModelAndroid.GXDataType
+convertType Model.GXModelBase.GXDataTypeNumeric = Model.GXModelAndroid.GXDataTypeNumeric
+convertType Model.GXModelBase.GXDataTypeCharacter = Model.GXModelAndroid.GXDataTypeCharacter
+convertType Model.GXModelBase.GXDataTypeImage = Model.GXModelAndroid.GXDataTypeImage
 
 convertElement :: Model.GXModelBase.GXLayoutElement -> Model.GXModelAndroid.GXLayoutElement
 convertElement (Model.GXModelBase.GXLayoutElement aLayoutBase aLayoutSpecific) =

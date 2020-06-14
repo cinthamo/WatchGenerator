@@ -20,13 +20,20 @@ data GXDataElement = GXDataElement {
     attributes   :: [GXDataAttributeElement]
   } deriving (Show, Eq)
 
-newtype GXDataVariableElement = GXDataVariableElement {
-    variableName :: String
+data GXDataVariableElement = GXDataVariableElement {
+    variableName :: String,
+    variableType :: GXDataType
   } deriving (Show, Eq)
 
-newtype GXDataAttributeElement = GXDataAttributeElement {
-    attributeName :: String
+data GXDataAttributeElement = GXDataAttributeElement {
+    attributeName :: String,
+    attributeType :: GXDataType
   } deriving (Show, Eq)
+
+data GXDataType = GXDataTypeCharacter
+                | GXDataTypeNumeric
+                | GXDataTypeImage
+    deriving (Show, Eq)
 
 data GXLayoutDimension = GXLayoutDimensionPercent Double | GXLayoutDimensionPoint Double
     deriving (Show, Eq)
@@ -59,7 +66,7 @@ data GXLayoutElementSpecific = GXLayoutElementAction {
                              | GXLayoutElementTextBlock {
       caption        :: String
     }
-                             | GXLayoutElementImage {                         
+                             | GXLayoutElementImage {
     }
                              | GXLayoutElementTable {
       rows               :: [[GXLayoutElement]],

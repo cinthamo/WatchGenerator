@@ -28,18 +28,18 @@ layoutItem :: Maybe GXDataElement -> GXLayoutElement -> ItemSimple
 layoutItem d (GXLayoutElement base specific) =
   let n = fixControlName $ controlName base
       p = findUpdateProperty n d
-      spec = layoutItemSpec specific in
+      spec = layoutItemSpec specific n d in
       ItemSimple (ItemSimpleBase n p) spec
 
-layoutItemSpec :: GXLayoutElementSpecific -> ItemSimpleSpecific
-layoutItemSpec (GXLayoutElementData _ _ _ "Image") = ImageSimple 100.0 60.0
-layoutItemSpec (GXLayoutElementData aCaption GXLayoutLabelPositionTypeNone True _) = TextSimple aCaption Nothing
-layoutItemSpec (GXLayoutElementData aCaption _ _ _) = EditSimple aCaption "number"
-layoutItemSpec (GXLayoutElementAction aActionName aCaption) = ButtonSimple aCaption aActionName
-layoutItemSpec (GXLayoutElementTextBlock aCaption) = TextSimple aCaption Nothing
-layoutItemSpec GXLayoutElementImage{} = ImageSimple 0 0
-layoutItemSpec GXLayoutElementGrid{} = GridSimple
-layoutItemSpec _ = error "Element type not supported"
+layoutItemSpec :: GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSimpleSpecific
+layoutItemSpec (GXLayoutElementData _ _ _ "Image") _ _ = ImageSimple 100.0 60.0
+layoutItemSpec (GXLayoutElementData aCaption GXLayoutLabelPositionTypeNone True _) _ _ = TextSimple aCaption Nothing
+layoutItemSpec (GXLayoutElementData aCaption _ _ _) name d = EditSimple aCaption (getInputType name d)
+layoutItemSpec (GXLayoutElementAction aActionName aCaption) _ _ = ButtonSimple aCaption aActionName
+layoutItemSpec (GXLayoutElementTextBlock aCaption) _ _ = TextSimple aCaption Nothing
+layoutItemSpec GXLayoutElementImage{} _ _ = ImageSimple 0 0
+layoutItemSpec GXLayoutElementGrid{} _ _ = GridSimple
+layoutItemSpec _ _ _ = error "Element type not supported"
 
 gridLayout :: [GXDataElement] -> GXLayoutElement -> LayoutSimple
 gridLayout aDataList (GXLayoutElement _ grid@GXLayoutElementGrid{}) =

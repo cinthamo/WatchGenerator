@@ -11,7 +11,7 @@ fixControlName = let
                  in map repl
 
 getHeight :: GXLayoutElementSpecific -> Maybe Double
-getHeight table@GXLayoutElementTable{} = case Model.GXModelAndroid.height table of
+getHeight table@GXLayoutElementTable{} = case height table of
                                            GXLayoutDimensionPoint n -> Just n
                                            _ -> Nothing
 getHeight _ = Nothing
@@ -27,18 +27,33 @@ getDataElement aDataProvider l@(_:_) =
     (y:_) -> Just y
 getDataElement _ [] = Nothing
 
-findUpdateProperty :: String -> Maybe GXDataElement -> Maybe String
-findUpdateProperty _ Nothing = Nothing
-findUpdateProperty st (Just (GXDataElement _ aVariables aAttributes)) =
+findDataValueProperty :: String -> Maybe GXDataElement -> Maybe (String, GXDataType)
+findDataValueProperty _ Nothing = Nothing
+findDataValueProperty st (Just (GXDataElement _ aVariables aAttributes)) =
              let st1 = map toLower $ filter (/= '_') st in
                case filterCompare variableName aVariables st1 of
-                 (v:_) -> Just (variableName v)
+                 (v:_) -> Just (variableName v, variableType v)
                  [] -> case filterCompare attributeNameDrop aAttributes st1 of
-                         (a:_) -> Just (attributeNameDrop a)
+                         (a:_) -> Just (attributeNameDrop a, attributeType a)
                          [] -> Nothing
              where
                filterCompare f xs st1 = filter (\x -> map toLower (f x) == st1) xs
                attributeNameDrop = drop 37 . attributeName -- 37 is the guid
+
+findUpdateProperty :: String -> Maybe GXDataElement -> Maybe String
+findUpdateProperty st d = case findDataValueProperty st d of
+                                    Nothing -> Nothing
+                                    Just (s, _) -> Just s
+
+findDataTypeProperty :: String -> Maybe GXDataElement -> Maybe GXDataType
+findDataTypeProperty st d = case findDataValueProperty st d of
+                                    Nothing -> Nothing
+                                    Just (_, dt) -> Just dt
+
+getInputType :: String -> Maybe GXDataElement -> String
+getInputType name d = case findDataTypeProperty name d of
+                        Just GXDataTypeNumeric -> "number"
+                        _ -> "text"
 
 emptyToNothing :: [a] -> Maybe [a]
 emptyToNothing [] = Nothing

@@ -14,12 +14,12 @@ generate model = let panel = head $ panelObjects model
                      d = getDataElement aPanelDataProvider aDataList
                      GXLayoutElement _ table = layoutTable panel
                      r = concat $ rows table
-                     aItems = layoutItems aPackage r
+                     aItems = layoutItems aPackage d r
                      aGridList = filter isGrid r
                      aSourceIndex = getSourceIndex aGridList aDataList
                      aHasGrid = [] /= aGridList
                      aPackage = "com.artech.masterwatch." ++ mainPanelName model in
-  (Layout "main" aHasGrid True True Nothing aItems : map (gridLayout aPackage) aGridList,
+  (Layout "main" aHasGrid True True Nothing aItems : map (gridLayout aPackage aDataList) aGridList,
    AndroidMain aPackage aDataView aSourceIndex aHasGrid (getUpdates r d) (getEvents r),
    if aHasGrid then Just (AndroidAdapter aPackage (getUpdatesGrid aGridList aDataList)) else Nothing)
   where
@@ -32,28 +32,31 @@ generate model = let panel = head $ panelObjects model
                              fromJust $ getUpdates r d
     getUpdatesGrid _ _ = error "Should be a grid"
 
-layoutItems :: String -> [GXLayoutElement] -> [Item]
-layoutItems aPackage = map f where
-  f (GXLayoutElement base specific) = Item (ItemBase (fixControlName $ controlName base)) (layoutItem aPackage specific)
+layoutItems :: String -> Maybe GXDataElement -> [GXLayoutElement] -> [Item]
+layoutItems aPackage d = map f where
+  f (GXLayoutElement base specific) = let name = fixControlName $ controlName base in
+    Item (ItemBase name) (layoutItem aPackage specific name d)
 
-layoutItem :: String -> GXLayoutElementSpecific -> ItemSpecific
-layoutItem _ (GXLayoutElementData _ _ _ _ "Image") = Image 100.0 60.0
-layoutItem _ (GXLayoutElementData _ aCaption GXLayoutLabelPositionTypeNone True _) = Text aCaption Nothing
-layoutItem _ (GXLayoutElementData _ aCaption _ _ _) = Edit aCaption "number"
-layoutItem _ (GXLayoutElementAction aActionName _ aCaption _) = Button aCaption ("onButton" ++ aActionName)
-layoutItem _ (GXLayoutElementTextBlock aCaption) = Text aCaption Nothing
-layoutItem _ GXLayoutElementImage{} = Image 0 0
-layoutItem p GXLayoutElementGrid{} = Grid p
-layoutItem _ _ = error "Element type not supported"
+layoutItem :: String -> GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSpecific
+layoutItem _ (GXLayoutElementData _ _ _ _ "Image") _ _ = Image 100.0 60.0
+layoutItem _ (GXLayoutElementData _ aCaption GXLayoutLabelPositionTypeNone True _) _ _ = Text aCaption Nothing
+layoutItem _ (GXLayoutElementData _ aCaption _ _ _) name d = Edit aCaption (getInputType name d)
+layoutItem _ (GXLayoutElementAction aActionName _ aCaption _) _ _ = Button aCaption ("onButton" ++ aActionName)
+layoutItem _ (GXLayoutElementTextBlock aCaption) _ _ = Text aCaption Nothing
+layoutItem _ GXLayoutElementImage{} _ _ = Image 0 0
+layoutItem p GXLayoutElementGrid{} _ _ = Grid p
+layoutItem _ _ _ _ = error "Element type not supported"
 
-gridLayout :: String -> GXLayoutElement -> Layout
-gridLayout aPackage (GXLayoutElement _ grid@GXLayoutElementGrid{}) = let GXLayoutElement _ table = head $ gridLayouts grid
-                                                                         aRows = rows table
-                                                                         aItems = layoutItems aPackage (concat aRows)
-                                                                         aHeight = getHeight table
-                                                                         aIsVertical = length aRows /= 1 || length (head aRows) == 1 in
-                                                                     Layout "line" False False aIsVertical aHeight aItems
-gridLayout _ _ = error "Show only be called with grids"
+gridLayout :: String -> [GXDataElement] -> GXLayoutElement -> Layout
+gridLayout aPackage aDataList (GXLayoutElement _ grid@GXLayoutElementGrid{}) =
+  let GXLayoutElement _ table = head $ gridLayouts grid
+      aRows = rows table
+      d = getDataElement (gridDataProvider grid) aDataList
+      aItems = layoutItems aPackage d (concat aRows)
+      aHeight = getHeight table
+      aIsVertical = length aRows /= 1 || length (head aRows) == 1 in
+  Layout "line" False False aIsVertical aHeight aItems
+gridLayout _ _ _ = error "Show only be called with grids"
 
 getEvents :: [GXLayoutElement] -> Maybe [EventInfo]
 getEvents l = emptyToNothing $ concatMap f l
