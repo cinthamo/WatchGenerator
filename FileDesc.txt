@@ -1,0 +1,27 @@
+Main.hs - Puntos de entrada
+Generator.hs - Generador monolitico
+GeneratorPreSimple.hs - Generador estructura intermedia
+GeneratorMainSimple.hs - Generador intermedia a Main
+GeneratorAdapterSimple.hs - Generador intermedia a Adapter
+GeneratorLayoutSimple.hs - Generador intermadia a Layout
+GeneratorUtils.hs - Funciones comunes para Generadores
+
+- Directorio model
+GXModel.hs - Definicion estrutura json
+GXModelJSONReader.hs - Lector de estructura json
+Metadata*.hs - Estrucura json de un ejemplo
+
+- Directorio templates
+AndroidLayout.st - Template para Layout
+AndroidLayoutDataType.hs - Definition estructura Layout
+AndroidLayoutItem.st - Subtemplate para Layout items
+AndroidMain.st - Template para Main
+AndroidMainDataType.hs - Definicion estructura Main
+AndroidMainEvent.st - Subtemplate para Main events
+AndroidMainUpdate.st - Subtemplate para Main updates
+AndroidRecyclerAdapter.st - Template para Adapter
+AndroidRecyclerAdapterUpdate.st - Subtemplate para Adapter updates
+AndroidRecyclerView.st - Template para recycler view (solo package cambia)
+AndroidSimpleDataType.hs - Definicion estructura intermedias
+Example*.hs - Estruturas finales de un ejemplo
+ProcessExamples - Ejecuta los templates con los Example*.hs
