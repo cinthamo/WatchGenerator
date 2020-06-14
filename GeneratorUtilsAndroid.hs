@@ -50,10 +50,11 @@ findDataTypeProperty st d = case findDataValueProperty st d of
                                     Nothing -> Nothing
                                     Just (_, dt) -> Just dt
 
-getInputType :: String -> Maybe GXDataElement -> String
-getInputType name d = case findDataTypeProperty name d of
-                        Just GXDataTypeNumeric -> "number"
-                        _ -> "text"
+getInputType :: String -> Maybe GXDataElement -> Bool -> String
+getInputType _ _ True = "password"
+getInputType name d _ = case findDataTypeProperty name d of
+                          Just GXDataTypeNumeric -> "number"
+                          _ -> "text"
 
 emptyToNothing :: [a] -> Maybe [a]
 emptyToNothing [] = Nothing

@@ -32,9 +32,9 @@ layoutItem d (GXLayoutElement base specific) =
       ItemSimple (ItemSimpleBase n p) spec
 
 layoutItemSpec :: GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSimpleSpecific
-layoutItemSpec (GXLayoutElementData _ _ _ "Image") _ _ = ImageSimple 100.0 60.0
-layoutItemSpec (GXLayoutElementData aCaption GXLayoutLabelPositionTypeNone True _) _ _ = TextSimple aCaption Nothing
-layoutItemSpec (GXLayoutElementData aCaption aLabelPosition _ _) name d = EditSimple aCaption (convertLabelPosition aLabelPosition) (getInputType name d)
+layoutItemSpec (GXLayoutElementData _ _ _ "Image" _) _ _ = ImageSimple 100.0 60.0
+layoutItemSpec (GXLayoutElementData aCaption GXLayoutLabelPositionTypeNone True _ _) _ _ = TextSimple aCaption Nothing
+layoutItemSpec (GXLayoutElementData aCaption aLabelPosition _ _ aIsPassword) name d = EditSimple aCaption (convertLabelPosition aLabelPosition) (getInputType name d aIsPassword)
   where
     convertLabelPosition GXLayoutLabelPositionTypeLeft = LabelPositionLeft
     convertLabelPosition GXLayoutLabelPositionTypeRight = LabelPositionRight

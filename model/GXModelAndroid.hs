@@ -61,7 +61,8 @@ data GXLayoutElementSpecific = GXLayoutElementAction {
       caption        :: String,
       labelPosition  :: GXLayoutLabelPositionType,
       readonly       :: Bool,
-      controlType    :: String
+      controlType    :: String,
+      isPassword     :: Bool
     }
                              | GXLayoutElementTextBlock {
       caption        :: String

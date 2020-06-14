@@ -1,22 +1,34 @@
-module MetadataControls where
+module MetadataCountryList where
 
-import Model.GXModel
+import Model.GXModelBase
 
-controls :: GXAppModel
-controls = GXAppModel
-  { mainPanelName = "controls"
+countryList :: GXAppModel
+countryList = GXAppModel
+  { mainPanelName = "countrylist"
   , panelObjects =
       [ GXPanelObject
-          { panelName = "Controls"
-          , panelDataProvider = "Controls_Level_Detail"
+          { panelName = "CountryList"
+          , panelDataProvider = ""
           , dataList =
               [ GXDataElement
-                  { dataProvider = "Controls_Level_Detail"
-                  , variables =
-                      [ GXDataVariableElement
-                          { variableName = "Num" , variableType = GXDataTypeNumeric }
+                  { dataProvider = "CountryList_Level_Detail_Grid1"
+                  , variables = []
+                  , attributes =
+                      [ GXDataAttributeElement
+                          { attributeName = "adbb33c9-0906-4971-833c-998de27e0676-CountryId"
+                          , attributeType = GXDataTypeNumeric
+                          }
+                      , GXDataAttributeElement
+                          { attributeName =
+                              "adbb33c9-0906-4971-833c-998de27e0676-CountryFlag"
+                          , attributeType = GXDataTypeImage
+                          }
+                      , GXDataAttributeElement
+                          { attributeName =
+                              "adbb33c9-0906-4971-833c-998de27e0676-CountryName"
+                          , attributeType = GXDataTypeCharacter
+                          }
                       ]
-                  , attributes = []
                   }
               ]
           , layoutTable =
@@ -31,31 +43,61 @@ controls = GXAppModel
                   { rows =
                       [ [ GXLayoutElement
                             GXLayoutElementBase
-                              { controlName = "&num"
+                              { controlName = "Grid1"
                               , visible = True
                               , enabled = True
                               , invisibleMode = GXLayoutInvisibleModeKeepSpace
                               }
-                            GXLayoutElementData
-                              { fieldName = "&Num"
-                              , caption = "Number"
-                              , labelPosition = GXLayoutLabelPositionTypeTop
-                              , readonly = False
-                              , controlType = "Edit"
-                              }
-                        ]
-                      , [ GXLayoutElement
-                            GXLayoutElementBase
-                              { controlName = "Click"
-                              , visible = True
-                              , enabled = True
-                              , invisibleMode = GXLayoutInvisibleModeKeepSpace
-                              }
-                            GXLayoutElementAction
-                              { actionName = "Click"
-                              , size = ( 0.0 , 0.0 )
-                              , caption = "Click"
-                              , imageName = ""
+                            GXLayoutElementGrid
+                              { gridLayouts =
+                                  [ GXLayoutElement
+                                      GXLayoutElementBase
+                                        { controlName = "Grid1table"
+                                        , visible = True
+                                        , enabled = True
+                                        , invisibleMode = GXLayoutInvisibleModeKeepSpace
+                                        }
+                                      GXLayoutElementTable
+                                        { rows =
+                                            [ [ GXLayoutElement
+                                                  GXLayoutElementBase
+                                                    { controlName = "Countryflag"
+                                                    , visible = True
+                                                    , enabled = True
+                                                    , invisibleMode = GXLayoutInvisibleModeKeepSpace
+                                                    }
+                                                  GXLayoutElementData
+                                                    { fieldName = "CountryFlag"
+                                                    , caption = ""
+                                                    , labelPosition = GXLayoutLabelPositionTypeNone
+                                                    , readonly = True
+                                                    , controlType = "Image"
+                                                    , isPassword = False
+                                                    }
+                                              , GXLayoutElement
+                                                  GXLayoutElementBase
+                                                    { controlName = "Countryname"
+                                                    , visible = True
+                                                    , enabled = True
+                                                    , invisibleMode = GXLayoutInvisibleModeKeepSpace
+                                                    }
+                                                  GXLayoutElementData
+                                                    { fieldName = "CountryName"
+                                                    , caption = ""
+                                                    , labelPosition = GXLayoutLabelPositionTypeNone
+                                                    , readonly = True
+                                                    , controlType = "Edit"
+                                                    , isPassword = False
+                                                    }
+                                              ]
+                                            ]
+                                        , width = GXLayoutDimensionPercent 100.0
+                                        , height = GXLayoutDimensionPoint 80.0
+                                        , tableLayoutName = Just "Layout1"
+                                        }
+                                  ]
+                              , gridDataProvider = "CountryList_Level_Detail_Grid1"
+                              , gridDefaultAction = ""
                               }
                         ]
                       ]

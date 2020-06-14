@@ -13,7 +13,14 @@ controlsLayout = [ Layout
       , items =
           [ Item
               { b = ItemBase { Templates.AndroidLayoutDataType.id = "_num" }
-              , s = Edit { label = "Number" , inputType = "number" }
+              , s =
+                  Edit
+                    { inputType = "number"
+                    , label = "Number"
+                    , labelOrientation = "vertical"
+                    , labelBefore = True
+                    , labelAfter = False
+                    }
               }
           , Item
               { b = ItemBase { Templates.AndroidLayoutDataType.id = "Click" }

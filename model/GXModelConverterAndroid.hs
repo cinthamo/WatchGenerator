@@ -39,8 +39,8 @@ convertElementBase (Model.GXModelBase.GXLayoutElementBase aControlName _ _ _) =
 convertElementSpecific :: Model.GXModelBase.GXLayoutElementSpecific -> Model.GXModelAndroid.GXLayoutElementSpecific
 convertElementSpecific (Model.GXModelBase.GXLayoutElementAction aActionName _ aCaption _) =
   Model.GXModelAndroid.GXLayoutElementAction aActionName aCaption
-convertElementSpecific (Model.GXModelBase.GXLayoutElementData _ aCaption aLabelPosition aReadonly aControlType) =
-  Model.GXModelAndroid.GXLayoutElementData aCaption (convertLabel aLabelPosition) aReadonly aControlType
+convertElementSpecific (Model.GXModelBase.GXLayoutElementData _ aCaption aLabelPosition aReadonly aControlType aIsPassword) =
+  Model.GXModelAndroid.GXLayoutElementData aCaption (convertLabel aLabelPosition) aReadonly aControlType aIsPassword
 convertElementSpecific (Model.GXModelBase.GXLayoutElementTextBlock aCaption) =
   Model.GXModelAndroid.GXLayoutElementTextBlock aCaption
 convertElementSpecific (Model.GXModelBase.GXLayoutElementImage _) =

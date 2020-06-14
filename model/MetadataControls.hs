@@ -1,6 +1,6 @@
 module MetadataControls where
 
-import Model.GXModel
+import Model.GXModelBase
 
 controls :: GXAppModel
 controls = GXAppModel
@@ -42,6 +42,7 @@ controls = GXAppModel
                               , labelPosition = GXLayoutLabelPositionTypeTop
                               , readonly = False
                               , controlType = "Edit"
+                              , isPassword = False
                               }
                         ]
                       , [ GXLayoutElement

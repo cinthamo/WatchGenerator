@@ -1,6 +1,6 @@
 module MetadataNumberList where
 
-import Model.GXModel
+import Model.GXModelBase
 
 numberList :: GXAppModel
 numberList = GXAppModel
@@ -65,6 +65,7 @@ numberList = GXAppModel
                                                     , labelPosition = GXLayoutLabelPositionTypeNone
                                                     , readonly = True
                                                     , controlType = "Edit"
+                                                    , isPassword = False
                                                     }
                                               ]
                                             ]

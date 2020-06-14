@@ -94,6 +94,10 @@ instance FromJSON GXLayoutElementSpecific where
                                                      case HM.lookup "CustomProperties" innerV of
                                                        Just (Object customV) -> customV .: "@ControlType"
                                                        _ -> pure ""
+                                                     <*>
+                                                     case HM.lookup "CustomProperties" innerV of
+                                                       Just (Object customV) -> parseMaybeBoolStringFromObject "@IsPassword" customV .!= True
+                                                       _ -> pure False
                            _ -> empty
                          <|>
                          case HM.lookup "textblock" v of

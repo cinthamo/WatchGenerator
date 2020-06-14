@@ -1,6 +1,6 @@
 module MetadataCountryList where
 
-import Model.GXModel
+import Model.GXModelBase
 
 countryList :: GXAppModel
 countryList = GXAppModel
@@ -72,6 +72,7 @@ countryList = GXAppModel
                                                     , labelPosition = GXLayoutLabelPositionTypeNone
                                                     , readonly = True
                                                     , controlType = "Image"
+                                                    , isPassword = False
                                                     }
                                               , GXLayoutElement
                                                   GXLayoutElementBase
@@ -86,6 +87,7 @@ countryList = GXAppModel
                                                     , labelPosition = GXLayoutLabelPositionTypeNone
                                                     , readonly = True
                                                     , controlType = "Edit"
+                                                    , isPassword = False
                                                     }
                                               ]
                                             ]

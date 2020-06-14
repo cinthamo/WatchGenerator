@@ -1,6 +1,6 @@
 module MetadataTextData where
 
-import Model.GXModel
+import Model.GXModelBase
 
 textData :: GXAppModel
 textData = GXAppModel
@@ -51,6 +51,7 @@ textData = GXAppModel
                               , labelPosition = GXLayoutLabelPositionTypeNone
                               , readonly = True
                               , controlType = "Edit"
+                              , isPassword = False
                               }
                         ]
                       ]

@@ -38,9 +38,9 @@ layoutItems aPackage d = map f where
     Item (ItemBase name) (layoutItem aPackage specific name d)
 
 layoutItem :: String -> GXLayoutElementSpecific -> String -> Maybe GXDataElement -> ItemSpecific
-layoutItem _ (GXLayoutElementData _ _ _ _ "Image") _ _ = Image 100.0 60.0
-layoutItem _ (GXLayoutElementData _ aCaption GXLayoutLabelPositionTypeNone True _) _ _ = Text aCaption Nothing
-layoutItem _ (GXLayoutElementData _ aCaption aLabelPosition _ _) name d = Edit (getInputType name d) aCaption (getLabelOrientation aLabelPosition) (getLabelBefore aLabelPosition) (getLabelAfter aLabelPosition)
+layoutItem _ (GXLayoutElementData _ _ _ _ "Image" _) _ _= Image 100.0 60.0
+layoutItem _ (GXLayoutElementData _ aCaption GXLayoutLabelPositionTypeNone True _ _) _ _ = Text aCaption Nothing
+layoutItem _ (GXLayoutElementData _ aCaption aLabelPosition _ _ aIsPassword) name d = Edit (getInputType name d aIsPassword) aCaption (getLabelOrientation aLabelPosition) (getLabelBefore aLabelPosition) (getLabelAfter aLabelPosition)
   where
     getLabelOrientation GXLayoutLabelPositionTypeLeft = "horizontal"
     getLabelOrientation GXLayoutLabelPositionTypeRight = "horizontal"
