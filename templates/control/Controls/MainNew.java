@@ -30,7 +30,7 @@ public class MainNew extends MainBase {
 
         Entity entity = data.getSingleEntity();
 
-        EditText edit = (EditText)findViewById(R.id._num);
+        EditText edit = findViewById(R.id._num);
         edit.setText((String)entity.getProperty("Num"));
 
     }

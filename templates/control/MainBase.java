@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import com.artech.actions.ActionExecution;
@@ -13,6 +14,7 @@ import com.artech.actions.ActionParameters;
 import com.artech.actions.CompositeAction;
 import com.artech.actions.UIContext;
 import com.artech.activities.ActivityController;
+import com.artech.activities.ActivityHelper;
 import com.artech.activities.IntentParameters;
 import com.artech.app.ComponentId;
 import com.artech.app.ComponentParameters;
@@ -27,6 +29,7 @@ import com.artech.base.metadata.enums.DisplayModes;
 import com.artech.base.metadata.layout.LayoutDefinition;
 import com.artech.base.metadata.loader.LoadResult;
 import com.artech.base.model.Entity;
+import com.artech.base.model.EntityFactory;
 import com.artech.base.services.Services;
 import com.artech.controllers.DataViewController;
 import com.artech.controllers.IDataSourceBoundView;
@@ -35,14 +38,13 @@ import com.artech.controllers.IDataViewController;
 import com.artech.controllers.RefreshParameters;
 import com.artech.controllers.ViewData;
 import com.artech.fragments.IDataView;
+import com.artech.init.AppInitRunnable;
 import com.artech.ui.Anchor;
 
 public class MainBase extends Activity implements IDataView, IDataSourceBoundView {
     private ProgressDialog mProgressDialog;
-    private ActivityController mController;
-    private LayoutDefinition mLayout;
 
-    @Override
+	@Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if (!Services.Application.isLoaded()) {
@@ -53,48 +55,18 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     // Metadata
     private void loadMetadata() {
         mProgressDialog = ProgressDialog.show(this, getResources().getText(com.artech.R.string.GXM_Loading), getResources().getText(com.artech.R.string.GXM_PleaseWait), true);
-        Thread thread = new Thread(null, doBackgroundProcessing, "Background");
+        Thread thread = new Thread(null, this::loadApplication, "Background");
         thread.start();
     }
 
-    private Handler mHandler = new Handler();
-
-    private final Runnable doBackgroundProcessing = new Runnable() {
-        @Override
-        public void run() {
-            loadApplication();
-        }
-    };
-
     private void loadApplication() {
-        //If app data is not loaded, load it.
-        if (!Services.Application.isLoaded()) {
-            LoadResult loadResult;
-            try {
-                // Load the Application.
-                loadResult = Services.Application.initialize();
-            } catch (Exception ex) {
-                // Uncaught exception, possibly "out of memory".
-                loadResult = LoadResult.error(ex);
-            }
-            if (loadResult.getCode() != LoadResult.RESULT_OK) {
-                Services.Log.Error("Metadata could not be load.", "Message: " + loadResult.getErrorMessage());
-            }
-            mHandler.post(new AfterLoadRunnable(loadResult));
-        }
-    }
-
-    private class AfterLoadRunnable implements Runnable {
-        private final LoadResult mResult;
-
-        private AfterLoadRunnable(LoadResult result) {
-            mResult = result;
-        }
-
-        @Override
-        public void run() {
-            mProgressDialog.dismiss();
-            loadController();
+		if (!AppInitRunnable.checkAndLoadApplicationResult()) {
+			Services.Log.error("Failed to execute Notification Action: Metadata is not loaded");
+		} else {
+			new Handler(Looper.getMainLooper()).post(() -> {
+				mProgressDialog.dismiss();
+				loadController();
+			});
         }
     }
 
@@ -103,7 +75,7 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
         IViewDefinition viewDefinition = MyApplication.getApp().getMain();
         ActionDefinition actionDefinition = viewDefinition.getEvent(eventName);
         if (actionDefinition != null) {
-            Entity entity = new Entity(StructureDefinition.EMPTY); // Faltan las variables, ver DashboardFragment
+            Entity entity = EntityFactory.newEntity(); // Faltan las variables, ver DashboardFragment
             ActionParameters actionParameters = new ActionParameters(entity);
             CompositeAction action = ActionFactory.getAction(getUIContext(), actionDefinition, actionParameters);
             ActionExecution exec = new ActionExecution(action);
@@ -115,19 +87,32 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     protected String getMetadataDataView() { return null; }
     protected Integer getDataSourceIndex() { return 0; }
 
+    // Current Activity
+	@Override
+	public void onResume() {
+		super.onResume();
+		ActivityHelper.onResume(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		ActivityHelper.onPause(this);
+	}
+
     // Controller
     private void loadController() {
         if (getMetadataDataView() == null)
             return; // No data
 
         Intent intent = getIntent();
-        intent.putExtra(IntentParameters.DataView, getMetadataDataView());
-        intent.putExtra(IntentParameters.Connectivity, Connectivity.Offline);
-        mController = new ActivityController(this);
+        intent.putExtra(IntentParameters.DATA_VIEW, getMetadataDataView());
+        intent.putExtra(IntentParameters.CONNECTIVITY, Connectivity.Offline);
+		ActivityController mController = new ActivityController(this);
         mController.initializeFrom(intent);
         ComponentParameters mainParams = mController.getModel().getMain().getParams();
-        DataViewController controller = (DataViewController)mController.getController(getUIContext(), this, ComponentId.ROOT, mainParams);
-        mLayout = controller.getDefinition().getLayoutForMode(DisplayModes.VIEW);
+        DataViewController controller = (DataViewController) mController.getController(getUIContext(), this, ComponentId.ROOT, mainParams);
+		LayoutDefinition mLayout = controller.getDefinition().getLayoutForMode(DisplayModes.VIEW);
         controller.attachDataController(this);
         controller.onResume();
     }
@@ -154,9 +139,7 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     }
 
     @Override
-    public void runAction(ActionDefinition action, Anchor anchor) {
-
-    }
+    public void runAction(ActionDefinition action, Anchor anchor) { }
 
     @Override
     public UIContext getUIContext() {
@@ -206,12 +189,10 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     }
 
     @Override
-    public void update(ViewData data) {
-    }
+    public void update(ViewData data) { }
 
     @Override
-    public void onBeforeRefresh(RefreshParameters params) {
-    }
+    public void onBeforeRefresh(RefreshParameters params) { }
 
     @Override
     public boolean needsMoreData() {
@@ -219,8 +200,7 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     }
 
     @Override
-    public void setActive(boolean value) {
-    }
+    public void setActive(boolean value) { }
 
     @Override
     public boolean isDataReady() {
@@ -228,6 +208,8 @@ public class MainBase extends Activity implements IDataView, IDataSourceBoundVie
     }
 
     @Override
-    public void refreshData(RefreshParameters params) {
-    }
+    public void refreshData(RefreshParameters params) { }
+
+	@Override
+	public void updateActionBar() { }
 }

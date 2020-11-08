@@ -1,17 +1,16 @@
 build.gradle
 - Agregar bajo dependencies
-	implementation 'com.google.android.gms:play-services-wearable:10.2.4'
-	compileOnly 'com.google.android.wearable:wearable:2.0.3'
-//	implementation 'com.google.android.support:wearable:2.0.3'
-	implementation "com.android.support:support-v13:${ANDROID_SUPPORT_LIBRARY_VERSION}"
-	implementation "com.android.support:recyclerview-v7:${ANDROID_SUPPORT_LIBRARY_VERSION}"
+	implementation 'com.google.android.gms:play-services-wearable:17.0.0'
+	compileOnly 'com.google.android.wearable:wearable:2.8.1'
+	implementation "com.android.support:support-v13:${deps_versions.support}"
+	implementation "com.android.support:recyclerview-v7:${deps_versions.support}"
 
 src/main/AndroidManifest.xml
 - Agragar bajo <manifest>
     <uses-feature android:name="android.hardware.type.watch" />
 
 - Cambiar
-    <activity android:name=".Main" ...>
+    <activity android:name="com.artech.activities.StartupActivity" ...>
   por
     <activity android:name=".MainNew" ...>
 

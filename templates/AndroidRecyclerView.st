@@ -1,21 +1,17 @@
 package $d.packageA$.controls;
 
-/**
- * Created by Cristian on 19/8/17.
- */
-
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.artech.controllers.ViewData;
 
 public class MyRecyclerView extends RecyclerView {
-    private MyRecyclerAdapter mAdapter;
-    private LayoutManager mLayoutManager;
+    private final MyRecyclerAdapter mAdapter;
 
     public MyRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -23,8 +19,7 @@ public class MyRecyclerView extends RecyclerView {
         mAdapter = new MyRecyclerAdapter(LayoutInflater.from(context));
         setAdapter(mAdapter);
 
-        mLayoutManager = new LinearLayoutManager(context);
-        setLayoutManager(mLayoutManager);
+        setLayoutManager(new LinearLayoutManager(context));
     }
 
     public void update(ViewData data) {

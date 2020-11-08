@@ -29,7 +29,7 @@ public class MainNew extends MainBase {
 
         Entity entity = data.getSingleEntity();
 
-        TextView view = (TextView)findViewById(R.id._hi);
+        TextView view = findViewById(R.id._hi);
         view.setText((String)entity.getProperty("Hi"));
 
     }

@@ -33,7 +33,7 @@ public class MainNew extends MainBase {
 
         Entity entity = data.getSingleEntity();
 
-        MyRecyclerView view = (MyRecyclerView)findViewById(R.id.Grid1);
+        MyRecyclerView view = findViewById(R.id.Grid1);
         view.update(data);
 
     }
