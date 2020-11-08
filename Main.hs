@@ -40,7 +40,7 @@ meta n = let exampleName = exampleList !! n in
     writeFile "out/Metadata.hs" $ ppMetadata exampleName appModel
     writeFile "out/Example.hs" $ ppExample exampleName $ generate appModel
 
--- Despliega la estrutra intermedia de un ejemplo
+-- Despliega la estructura intermedia de un ejemplo
 metaS :: Int -> IO ()
 metaS n = let exampleName = exampleList !! n in
       do
